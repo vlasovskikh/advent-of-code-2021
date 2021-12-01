@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "type": "command",
+            "name": "pre-commit",
+            "program": "poetry",
+            "args": ["run", "pre-commit", "run", "-a"]
+        }
+    ]
+}
