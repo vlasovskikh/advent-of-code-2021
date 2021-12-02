@@ -1,4 +1,37 @@
+from dataclasses import dataclass
+
 from aoc21 import utils
+
+
+@dataclass
+class Submarine:
+    """Submarine that executes movement commands and keeps track of its coordinates."""
+
+    use_aim: bool
+    x: int = 0
+    y: int = 0
+    aim: int = 0
+
+    def forward(self, x: int) -> None:
+        """Go forward `x` units and, possibly, change depth if the object uses
+        depth aiming."""
+        self.x += x
+        if self.use_aim:
+            self.y += x * self.aim
+
+    def down(self, arg: int) -> None:
+        """Go down `arg` units, or increase depth aim."""
+        if self.use_aim:
+            self.aim += arg
+        else:
+            self.y += arg
+
+    def up(self, arg: int) -> None:
+        """Go up `arg` units, or decrease depth aim."""
+        if self.use_aim:
+            self.aim -= arg
+        else:
+            self.y -= arg
 
 
 def execute_submarine_commands(
@@ -11,25 +44,11 @@ def execute_submarine_commands(
 
     Set `use_aim` to `True` to use the aim semantics from the Part 2.
     """
-    x, y, aim = 0, 0, 0
+    submarine = Submarine(use_aim=use_aim)
     for cmd, arg in commands:
-        if cmd == "forward":
-            x += arg
-            if use_aim:
-                y += arg * aim
-        elif cmd == "down":
-            if use_aim:
-                aim += arg
-            else:
-                y += arg
-        elif cmd == "up":
-            if use_aim:
-                aim -= arg
-            else:
-                y -= arg
-        else:
-            raise ValueError(f"Unknown command: '{cmd} {arg}'")
-    return x, y
+        f = getattr(submarine, cmd)
+        f(arg)
+    return submarine.x, submarine.y
 
 
 def parse_input(lines: list[str]) -> list[tuple[str, int]]:
