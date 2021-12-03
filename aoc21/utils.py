@@ -5,7 +5,7 @@ from pathlib import Path
 def read_input_lines(module_path: str) -> list[str]:
     """Read lines of the input file that corresponds to the module name."""
     with open(input_file_path(module_path), "r") as fd:
-        return fd.readlines()
+        return [s.strip() for s in fd.readlines()]
 
 
 def input_file_path(module_path: str) -> Path:
