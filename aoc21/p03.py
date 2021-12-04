@@ -55,9 +55,13 @@ def parse_input(lines: list[str]) -> np.ndarray:
     return np.array([[int(c) for c in line] for line in lines])
 
 
-if __name__ == "__main__":
+def main():
     array = parse_input(utils.read_input_lines(__file__))
     g, e = gamma_and_epsilon(array)
     print(g * e)
     o2, co2 = o2_and_co2(array)
     print(o2 * co2)
+
+
+if __name__ == "__main__":
+    main()
