@@ -44,10 +44,8 @@ def life_support(array: np.ndarray, bit_criteria: Callable[[np.ndarray], int]) -
     _, ncols = array.shape
     for i in range(ncols):
         column = array[:, i]
-        bit = bit_criteria(column)
-        column_mask = column == bit
-        mask = np.tile(column_mask[:, None], [1, ncols])
-        masked = array[mask]
+        column_mask = column == bit_criteria(column)
+        masked = array[column_mask]
         array = masked.reshape(masked.size // ncols, ncols)
         if array.shape[0] == 1:
             return bools_to_int(list(array[0] == 1))
