@@ -39,14 +39,15 @@ def co2_criteria(column: np.ndarray) -> int:
 def life_support(array: np.ndarray, bit_criteria: Callable[[np.ndarray], int]) -> int:
     """Calculate a life support rating for a report based on a custom criteria.
 
-    The criteria determines which bits from the column to keep for subsequent columns.
+    The criteria determine which bits from the column to keep for subsequent columns.
     """
-    _, ncols = array.shape
-    for i in range(ncols):
+    _, n_cols = array.shape
+    for i in range(n_cols):
         column = array[:, i]
         column_mask = column == bit_criteria(column)
         array = array[column_mask]
-        if array.shape[0] == 1:
+        n_rows, _ = array.shape
+        if n_rows == 1:
             return bools_to_int(list(array[0] == 1))
     raise ValueError("No matching row found")
 
