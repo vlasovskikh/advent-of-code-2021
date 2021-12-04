@@ -45,8 +45,7 @@ def life_support(array: np.ndarray, bit_criteria: Callable[[np.ndarray], int]) -
     for i in range(ncols):
         column = array[:, i]
         column_mask = column == bit_criteria(column)
-        masked = array[column_mask]
-        array = masked.reshape(masked.size // ncols, ncols)
+        array = array[column_mask]
         if array.shape[0] == 1:
             return bools_to_int(list(array[0] == 1))
     raise ValueError("No matching row found")
