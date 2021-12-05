@@ -1,4 +1,4 @@
-from typing import Iterator
+from typing import Iterator, cast
 
 import numpy as np
 
@@ -13,47 +13,36 @@ def play_bingo(boards: np.ndarray, numbers: list[int]) -> Iterator[tuple[int, in
     """
     n_boards, n_rows, n_cols = boards.shape
     assert n_rows == n_cols
-    win_combination = np.full(n_rows, True)
     bingo = np.full(boards.shape, False)
     playing = np.full(boards.shape, True)
     for number in numbers:
         bingo[boards == number] = True
         for axis in [1, 2]:  # Columns and rows
-            win_arrays = np.all((bingo & playing) == win_combination, axis=axis)
-            if np.any(win_arrays):
-                index = win_index(win_arrays)
-                yield sum_unmarked(boards, bingo, index), number
-                playing[index] = False
-                if not np.any(playing):
-                    return
+            complete_lines = np.all(playing & bingo, axis=axis)
+            if not np.any(complete_lines):
+                continue
+            index = winner_index(complete_lines)
+            winner = boards[index]
+            unmarked = ~bingo[index]
+            yield cast(int, np.sum(winner[unmarked])), number
+            playing[index] = False
+            if not np.any(playing):
+                return
     raise ValueError("Unfinished boards, but not numbers left")
 
 
-def sum_unmarked(boards: np.ndarray, bingo: np.ndarray, index: int) -> int:
-    """Sum the unmarked number on the board by its index.
+def winner_index(complete_lines: np.ndarray) -> int:
+    """Index of the winning board from the complete lines.
 
-    `bingo` is a 3D-array of called check marks `True`. It has the same shape as
-    `boards`.
+    `complete_lines` is a 2D-array of (board, axis) with `True` when we have a complete
+    line for this axis on this board.
     """
-    win_board = boards[index]
-    win_bingo = bingo[index]
-    unmarked = ~win_bingo
-    return int(np.sum(win_board[unmarked]))
-
-
-def win_index(win_arrays: np.ndarray) -> int:
-    """Index of the winning board from the winning arrays.
-
-    `win_arrays` is a 2D-array of (board, axis) with `True` when we have a winning
-    combination for this axis on this board.
-    """
-    win_boards = np.any(win_arrays, axis=1)
-    return np.where(win_boards)[0][0]
+    wins = np.any(complete_lines, axis=1)
+    return np.where(wins)[0][0]
 
 
 def parse_input(lines: list[str]) -> tuple[np.ndarray, list[int]]:
-    first = lines[0]
-    rest = [line.strip() for line in lines[1:]]
+    first, *rest = lines
     numbers = [int(x) for x in first.split(",")]
     boards = []
     board = []
@@ -68,11 +57,9 @@ def parse_input(lines: list[str]) -> tuple[np.ndarray, list[int]]:
 
 def main():
     boards, numbers = parse_input(utils.read_input_lines(__file__))
-    winners = list(play_bingo(boards, numbers))
-    first_sum, first_n = winners[0]
-    print(first_sum * first_n)
-    last_sum, last_n = winners[-1]
-    print(last_sum * last_n)
+    first, *rest, last = play_bingo(boards, numbers)
+    for sum, n in [first, last]:
+        print(sum * n)
 
 
 if __name__ == "__main__":
