@@ -7,4 +7,5 @@ def test_example():
 16,1,2,0,4,2,7,1,2,14
 """.strip().splitlines()
     )
-    assert minimize_fuel(crabs) == 37
+    assert minimize_fuel(crabs, expensive_fuel=False) == 37
+    assert minimize_fuel(crabs, expensive_fuel=True) == 168
