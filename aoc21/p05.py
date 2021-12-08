@@ -9,12 +9,12 @@ Line = tuple[int, int, int, int]
 
 
 def dangerous_areas(lines: list[Line], *, diagonals: bool) -> int:
-    """Find all the dangerous areas areas where at least two lines interect.
+    """Find all the dangerous areas where at least two lines interact.
 
     Set `diagonals` to `True` to count diagonals too, otherwise it's only horizontal
     and vertical lines.
     """
-    field = np.full(dimentions(lines), 0)
+    field = np.full(dimensions(lines), 0)
     for x1, y1, x2, y2 in lines:
         if x1 == x2 or y1 == y2:
             field[slice(*slice_tuple(y1, y2)), slice(*slice_tuple(x1, x2))] += 1
@@ -39,8 +39,8 @@ def slice_tuple(x1: int, x2: int, *, for_range: bool = False) -> tuple[int, int,
     return x1, stop if stop >= 0 or for_range else None, sign
 
 
-def dimentions(lines: list[Line]) -> tuple[int, int]:
-    """The dimentions of a field sufficient to accomodate these `lines`."""
+def dimensions(lines: list[Line]) -> tuple[int, int]:
+    """The dimensions of a field sufficient to accommodate these `lines`."""
     x = max(itertools.chain((line[0] for line in lines), (line[2] for line in lines)))
     y = max(itertools.chain((line[1] for line in lines), (line[3] for line in lines)))
     return x + 1, y + 1
