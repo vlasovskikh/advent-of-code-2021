@@ -1,4 +1,4 @@
-from aoc21.p08 import parse_input, count_easy_digits
+from aoc21.p08 import parse_input, count_easy_digits, sum_of_decoded_values
 
 
 def test_example():
@@ -15,3 +15,4 @@ egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb
 gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
 """.strip().splitlines()
     assert count_easy_digits(parse_input(data)) == 26
+    assert sum_of_decoded_values(parse_input(data)) == 61_229
