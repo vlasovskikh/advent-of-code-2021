@@ -1,4 +1,4 @@
-from aoc21.p09 import parse_input, sum_risk_levels
+from aoc21.p09 import parse_input, sum_risk_levels, top_3_basin_sizes_multiplied
 
 
 def test_example():
@@ -9,4 +9,6 @@ def test_example():
 8767896789
 9899965678
 """.strip().splitlines()
-    assert sum_risk_levels(parse_input(data)) == 15
+    heightmap = parse_input(data)
+    assert sum_risk_levels(heightmap) == 15
+    assert top_3_basin_sizes_multiplied(heightmap) == 1134
