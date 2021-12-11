@@ -1,12 +1,15 @@
+import itertools
+
 import numpy as np
 
 from aoc21 import utils
 
 
-def count_flashes(array: np.ndarray) -> int:
+def count_flashes(array: np.ndarray) -> tuple[int, int]:
     array = array.copy()
+    n_rows, n_cols = array.shape
     count = 0
-    for _ in range(100):
+    for step in itertools.count(1):
         flashes: set[tuple[int, int]] = set()
         array += 1
         while new := new_flashes(array, flashes):
@@ -14,9 +17,12 @@ def count_flashes(array: np.ndarray) -> int:
             for x, y in new:
                 ns = neighbors(array, x, y)
                 ns += 1
-        count += len(flashes)
+        if step <= 100:
+            count += len(flashes)
+        if len(flashes) == n_rows * n_cols:
+            return count, step
         array[array > 9] = 0
-    return count
+    raise ValueError("No synced flashes found")
 
 
 def new_flashes(
@@ -36,7 +42,9 @@ def neighbors(array: np.ndarray, x: int, y: int) -> np.ndarray:
 
 def main():
     array = parse_input(utils.read_input_lines(__file__))
-    print(count_flashes(array))
+    count, step = count_flashes(array)
+    print(count)
+    print(step)
 
 
 def parse_input(lines: list[str]) -> np.ndarray:

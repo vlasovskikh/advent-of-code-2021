@@ -14,4 +14,4 @@ def test_example():
 4846848554
 5283751526
 """.strip().splitlines()
-    assert count_flashes(parse_input(data)) == 1656
+    assert count_flashes(parse_input(data)) == (1656, 195)
