@@ -11,7 +11,8 @@ b-d
 A-end
 b-end
 """.strip().splitlines()
-    assert count_paths(parse_input(data)) == 10
+    # assert count_paths(parse_input(data), can_visit_twice=False) == 10
+    assert count_paths(parse_input(data), can_visit_twice=True) == 36
 
 
 def test_example_2():
@@ -27,7 +28,8 @@ kj-sa
 kj-HN
 kj-dc
 """.strip().splitlines()
-    assert count_paths(parse_input(data)) == 19
+    assert count_paths(parse_input(data), can_visit_twice=False) == 19
+    assert count_paths(parse_input(data), can_visit_twice=True) == 103
 
 
 def test_example_3():
@@ -51,4 +53,5 @@ zg-he
 pj-fs
 start-RW
 """.strip().splitlines()
-    assert count_paths(parse_input(data)) == 226
+    assert count_paths(parse_input(data), can_visit_twice=False) == 226
+    assert count_paths(parse_input(data), can_visit_twice=True) == 3509
