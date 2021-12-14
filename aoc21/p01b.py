@@ -1,7 +1,5 @@
-import itertools
-from typing import TypeVar, Iterable
-
 from aoc21 import utils
+from aoc21.utils import sliding_window
 
 
 def count_sliding_window_depth_increases(measurements: list[int]) -> int:
@@ -13,18 +11,6 @@ def count_sliding_window_depth_increases(measurements: list[int]) -> int:
     sum_pairs = sliding_window(sums, 2)
     increases = (1 for x, y in sum_pairs if x < y)
     return sum(increases)
-
-
-T = TypeVar("T")
-
-
-def sliding_window(xs: Iterable[T], n: int) -> Iterable[tuple[T, ...]]:
-    """Return a sliding window of size `n` for the specified iterable."""
-    iterators = itertools.tee(xs, n)
-    for shift_count, iterator in enumerate(iterators):
-        for _ in range(shift_count):
-            next(iterator, None)
-    return zip(*iterators)
 
 
 def parse_input(lines: list[str]) -> list[int]:

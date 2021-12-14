@@ -1,5 +1,7 @@
+import itertools
 import os
 from pathlib import Path
+from typing import TypeVar, Iterable
 
 
 def read_input_lines(module_path: str) -> list[str]:
@@ -13,3 +15,15 @@ def input_file_path(module_path: str) -> Path:
     p = Path(module_path)  # "/Users/vlan/exp/2021/aoc21/p01a.py"
     module_name, _ = os.path.splitext(p.name)
     return p.parent / ".." / "data" / f"{module_name}.txt"
+
+
+T = TypeVar("T")
+
+
+def sliding_window(xs: Iterable[T], n: int) -> Iterable[tuple[T, ...]]:
+    """Return a sliding window of size `n` for the specified iterable."""
+    iterators = itertools.tee(xs, n)
+    for shift_count, iterator in enumerate(iterators):
+        for _ in range(shift_count):
+            next(iterator, None)
+    return zip(*iterators)
