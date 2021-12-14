@@ -1,4 +1,4 @@
-from aoc21.p14 import parse_input, substitute, most_common_minus_least_common
+from aoc21.p14 import parse_input, substitute
 
 
 def test_example():
@@ -24,4 +24,28 @@ CC -> N
 CN -> C
 """.strip().splitlines()
     polymer, rules = parse_input(data)
-    assert most_common_minus_least_common(substitute(polymer, rules, 10)) == 1588
+    assert substitute(polymer, rules, 10) == 1588
+
+
+def test_substitute_1():
+    data = """
+AB
+
+AB -> C
+""".strip().splitlines()
+    polymer, rules = parse_input(data)
+    assert substitute(polymer, rules, 1) == 0
+
+
+def test_substitute_3():
+    data = """
+AB
+
+AB -> C
+AC -> C
+CB -> B
+CC -> C
+BB -> C
+""".strip().splitlines()
+    polymer, rules = parse_input(data)
+    assert substitute(polymer, rules, 3) == 4
