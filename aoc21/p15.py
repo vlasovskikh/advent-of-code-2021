@@ -51,6 +51,25 @@ def total_risk(
     return s - cavern[0][0]
 
 
+def wrap9(x: int) -> int:
+    div, mod = divmod(x, 10)
+    return min(div, 1) + mod
+
+
+def extend_cavern(cavern: list[list[int]]) -> list[list[int]]:
+    new_rows: list[list[int]] = []
+    for row in cavern:
+        new_row = []
+        for i in range(5):
+            new_row.extend([wrap9(x + i) for x in row])
+        new_rows.append(new_row)
+    new_cavern: list[list[int]] = []
+    for i in range(5):
+        for row in new_rows:
+            new_cavern.append([wrap9(x + i) for x in row])
+    return new_cavern
+
+
 def parse_input(lines: list[str]) -> list[list[int]]:
     return [[int(c) for c in line] for line in lines]
 
@@ -58,6 +77,7 @@ def parse_input(lines: list[str]) -> list[list[int]]:
 def main():
     cavern = parse_input(utils.read_input_lines(__file__))
     print(lowest_total_risk(cavern))
+    print(lowest_total_risk(extend_cavern(cavern)))
 
 
 if __name__ == "__main__":

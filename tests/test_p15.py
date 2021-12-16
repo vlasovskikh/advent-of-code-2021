@@ -1,4 +1,4 @@
-from aoc21.p15 import parse_input, lowest_total_risk
+from aoc21.p15 import parse_input, lowest_total_risk, extend_cavern
 
 
 def test_example():
@@ -15,3 +15,4 @@ def test_example():
 2311944581
 """.strip().splitlines()
     assert lowest_total_risk(parse_input(data)) == 40
+    assert lowest_total_risk(extend_cavern(parse_input(data))) == 315
