@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Union
+from typing import Union, ClassVar
 
 import bitstruct
 
@@ -24,6 +24,21 @@ class Packet:
             body, offset = Operator.from_bytes(data, offset)
         return Packet(version, type_id, body), offset
 
+    def evaluate(self) -> int:
+        body = self.body
+        if isinstance(body, Literal):
+            return body.evaluate()
+        elif isinstance(body, Operator):
+            op = body.ops.get(self.type_id, None)
+            if not op:
+                raise TypeError(f"Uknown type ID: {self.type_id}")
+            f = getattr(body, op, None)
+            if not f:
+                raise TypeError(f"Uknown operation: {op!r}")
+            return f()
+        else:
+            raise TypeError(f"Unknown body type: {type(body)}")
+
 
 @dataclass
 class Literal:
@@ -38,10 +53,23 @@ class Literal:
             value = value << 4 | bits
         return Literal(value), offset
 
+    def evaluate(self) -> int:
+        return self.value
+
 
 @dataclass
 class Operator:
     packets: list[Packet]
+
+    ops: ClassVar[dict[int, str]] = {
+        0: "sum",
+        1: "product",
+        2: "minimum",
+        3: "maximum",
+        5: "greater_than",
+        6: "less_than",
+        7: "equal_to",
+    }
 
     @staticmethod
     def from_bytes(data: bytes, offset: int) -> tuple[Operator, int]:
@@ -62,6 +90,33 @@ class Operator:
             return Operator(packets), offset
         else:
             raise ValueError(f"Unknown length type ID: {len_type_id}")
+
+    def sum(self) -> int:
+        return sum(p.evaluate() for p in self.packets)
+
+    def product(self) -> int:
+        res = 1
+        for p in self.packets:
+            res *= p.evaluate()
+        return res
+
+    def minimum(self) -> int:
+        return min(p.evaluate() for p in self.packets)
+
+    def maximum(self) -> int:
+        return max(p.evaluate() for p in self.packets)
+
+    def greater_than(self) -> int:
+        a, b = self.packets
+        return 1 if a.evaluate() > b.evaluate() else 0
+
+    def less_than(self) -> int:
+        a, b = self.packets
+        return 1 if a.evaluate() < b.evaluate() else 0
+
+    def equal_to(self) -> int:
+        a, b = self.packets
+        return 1 if a.evaluate() == b.evaluate() else 0
 
 
 def unpack(fmt: str, data: bytes, offset: int) -> tuple:
@@ -91,7 +146,9 @@ def parse_input(lines: list[str]) -> bytes:
 
 def main():
     data = parse_input(utils.read_input_lines(__file__))
-    print(sum_version_numbers(data))
+    p, offset = Packet.from_bytes(data)
+    print(sum_versions(p))
+    print(p.evaluate())
 
 
 if __name__ == "__main__":

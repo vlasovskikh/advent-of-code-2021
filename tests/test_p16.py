@@ -59,3 +59,51 @@ def test_example_3():
 def test_example_4():
     data = "A0016C880162017C3686B18A3D4780".splitlines()
     assert sum_version_numbers(parse_input(data)) == 31
+
+
+def test_example_b_1():
+    data = "C200B40A82".splitlines()
+    p, offset = Packet.from_bytes(parse_input(data))
+    assert p.evaluate() == 3
+
+
+def test_example_b_2():
+    data = "04005AC33890".splitlines()
+    p, offset = Packet.from_bytes(parse_input(data))
+    assert p.evaluate() == 54
+
+
+def test_example_b_3():
+    data = "880086C3E88112".splitlines()
+    p, offset = Packet.from_bytes(parse_input(data))
+    assert p.evaluate() == 7
+
+
+def test_example_b_4():
+    data = "CE00C43D881120".splitlines()
+    p, offset = Packet.from_bytes(parse_input(data))
+    assert p.evaluate() == 9
+
+
+def test_example_b_5():
+    data = "D8005AC2A8F0".splitlines()
+    p, offset = Packet.from_bytes(parse_input(data))
+    assert p.evaluate() == 1
+
+
+def test_example_b_6():
+    data = "F600BC2D8F".splitlines()
+    p, offset = Packet.from_bytes(parse_input(data))
+    assert p.evaluate() == 0
+
+
+def test_example_b_7():
+    data = "9C005AC2F8F0".splitlines()
+    p, offset = Packet.from_bytes(parse_input(data))
+    assert p.evaluate() == 0
+
+
+def test_example_b_8():
+    data = "9C0141080250320F1802104A08".splitlines()
+    p, offset = Packet.from_bytes(parse_input(data))
+    assert p.evaluate() == 1
