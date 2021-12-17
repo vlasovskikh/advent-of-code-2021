@@ -33,6 +33,14 @@ docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
 testing = ["pytest", "pytest-flake8", "pytest-cov", "pytest-black (>=0.3.7)", "pytest-mypy", "pytest-checkdocs (>=2.4)", "pytest-enabler (>=1.0.1)"]
 
 [[package]]
+name = "bitstruct"
+version = "8.12.1"
+description = "This module performs conversions between Python values and C bit field structs represented as Python byte strings."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "cfgv"
 version = "3.3.1"
 description = "Validate configuration and produce human readable error messages."
@@ -248,7 +256,7 @@ testing = ["coverage (>=4)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", 
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.11"
-content-hash = "2e4a2baf2898fb112611167c682115fa5dd33df5f53007f60e1dd64b7bc5568c"
+content-hash = "64a8bd1f5cf708584acffc1ec63a6c55dfc3be006dc871beaad43161f49d5f8f"
 
 [metadata.files]
 atomicwrites = [
@@ -262,6 +270,9 @@ attrs = [
 "backports.entry-points-selectable" = [
     {file = "backports.entry_points_selectable-1.1.1-py2.py3-none-any.whl", hash = "sha256:7fceed9532a7aa2bd888654a7314f864a3c16a4e710b34a58cfc0f08114c663b"},
     {file = "backports.entry_points_selectable-1.1.1.tar.gz", hash = "sha256:914b21a479fde881635f7af5adc7f6e38d6b274be32269070c53b698c60d5386"},
+]
+bitstruct = [
+    {file = "bitstruct-8.12.1.tar.gz", hash = "sha256:45b2b932ce6681f5c6ce8cba39abdd423b579b0568c76fa48b1e09c88368ede7"},
 ]
 cfgv = [
     {file = "cfgv-3.3.1-py2.py3-none-any.whl", hash = "sha256:c6a0883f3917a037485059700b9e75da2464e6c27051014ad85ba6aaa5884426"},
