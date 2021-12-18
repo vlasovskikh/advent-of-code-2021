@@ -47,7 +47,7 @@ def shoot(xs: Range, ys: Range) -> tuple[int, int]:
     max_heights = []
     velocities = set()
     for vx in range(1, xb + 1):
-        for vy in range(min(0, ya), abs(ya) + 1):
+        for vy in range(min(0, ya), yb + 1 if ya > 0 else -ya):
             res, max_y = check_target(trajectory(vx, vy), xs, ys)
             if res == 0:
                 max_heights.append(max_y)
