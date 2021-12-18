@@ -1,4 +1,4 @@
-from aoc21.p18 import Number, parse_input, magnitude_of_sum
+from aoc21.p18 import Number, parse_input, magnitude_of_sum, max_magnitude_of_pairs
 
 
 def test_simple_add():
@@ -103,4 +103,6 @@ def test_example():
 [[2,[[7,7],7]],[[5,8],[[9,3],[0,2]]]]
 [[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]]
 """.strip().splitlines()
-    assert magnitude_of_sum(parse_input(data)) == 4140
+    ns = parse_input(data)
+    assert magnitude_of_sum(ns) == 4140
+    assert max_magnitude_of_pairs(ns) == 3993

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import itertools
 import json
 from typing import Any
 
@@ -126,6 +127,10 @@ def magnitude_of_sum(ns: list[Number]) -> int:
     return sum(ns[1:], ns[0]).magnitude()
 
 
+def max_magnitude_of_pairs(ns: list[Number]) -> int:
+    return max((a + b).magnitude() for a, b in itertools.permutations(ns, 2))
+
+
 def parse_input(lines: list[str]) -> list[Number]:
     return [Number(json.loads(line)) for line in lines]
 
@@ -133,6 +138,7 @@ def parse_input(lines: list[str]) -> list[Number]:
 def main() -> None:
     numbers = parse_input(utils.read_input_lines(__file__))
     print(magnitude_of_sum(numbers))
+    print(max_magnitude_of_pairs(numbers))
 
 
 if __name__ == "__main__":
